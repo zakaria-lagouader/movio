@@ -1,21 +1,86 @@
 ---
+import RandomMovieLink from "../components/RandomMovieLink";
+import { url } from "../lib/utils";
+
 export interface Props {
 	title: string;
+	fixedNavbar?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, fixedNavbar = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
 		<title>{title}</title>
 	</head>
 	<body>
+		<nav class={fixedNavbar ? "fixed w-full z-20 top-0 left-0" : "w-full bg-gray-900"}>
+			<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+				<a href={url("/")} class="flex items-center">
+					<img src={url("/logo.svg")} class="h-8 mr-3" alt="Movio Logo" />
+					<span
+						class="self-center text-2xl font-semibold whitespace-nowrap text-white"
+						>Movio
+					</span>
+				</a>
+				<div class="flex md:order-2 md:hidden">
+					<button
+						data-collapse-toggle="navbar-sticky"
+						type="button"
+						class="inline-flex items-center p-2 text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+						aria-controls="navbar-sticky"
+						aria-expanded="false"
+					>
+						<span class="sr-only">Open main menu</span>
+						<svg
+							class="w-6 h-6"
+							aria-hidden="true"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+							xmlns="http://www.w3.org/2000/svg"
+							><path
+								fill-rule="evenodd"
+								d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+								clip-rule="evenodd"></path></svg
+						>
+					</button>
+				</div>
+				<div
+					class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+					id="navbar-sticky"
+				>
+					<ul
+						class={`flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 border-gray-700 ${
+							fixedNavbar && "bg-gray-900 md:bg-transparent"
+						}`}
+					>
+						<li>
+							<RandomMovieLink client:visible />
+						</li>
+						<li>
+							<a
+								href={url("/")}
+								class="block py-2 pl-3 pr-4 rounded md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 hover:text-white md:hover:bg-transparent border-gray-700"
+								>Github</a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
 		<slot />
 		<script
 			is:inline
